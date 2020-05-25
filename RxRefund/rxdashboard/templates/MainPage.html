@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+
+      {% load static %}
+    <link rel="stylesheet" href={% static "css/bootstrap.css" %} >
+        <style>
+        body {
+            background-color: antiquewhite
+        }
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: #333;
+        }
+
+        li {
+          float: left;
+        }
+
+        li a {
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+
+        li a:hover:not(.active) {
+          background-color: #111;
+        }
+
+        .active {
+          background-color: #5498af;
+        }
+
+
+
+    </style>
+
+    <title>Rxrefund</title>
+  </head>
+  <body>
+        <ul>
+            <li><a href="http://127.0.0.1:8000/">Home</a></li>
+            <li><a href="http://127.0.0.1:8000/summary/">Summary Page</a></li>
+            <li><a href="http://127.0.0.1:8000/date/">Date</a></li>
+            <li><a href="http://127.0.0.1:8000/calculations/"> Calculation Page</a></li>
+            <li style="float:right"><a class="active" href="#about">About</a></li>
+        </ul>
+
+      <h3 >Enter Alternative Unit Cost </h3>
+      <input type="submit" value="Submit" onclick=f()><br><br>
+
+
+      <table id="tb" class="table table-bordered" style="">
+          <thead>
+              <tr>
+                  <th scope="col">GCN</th>
+                  <th scope="col">Description</th>
+{#                  <th scope="col">Package Size</th>#}
+                  <th scope="col">Volume</th>
+                  <th scope="col">Total Revenue</th>
+                  <th scope="col">Total Cost</th>
+                  <th scope="col">Profit</th>
+                  <th scope="col">Margin</th>
+                  <th scope="col">Unit Cost</th>
+{#                  <th scope="col">Drug Manufacturer</th>#}
+                  <th scope="col">Alternative Unit Cost</th>
+                  <th scope="col">Savings With Alternative Cost</th>
+                   <th scope="col">Drug Manufacturer</th>
+              </tr>
+              {% for t in table %}
+                <tr>
+                    <td> {{ t.gdc }} </td>
+                    <td> {{ t.description }}</td>
+{#                    <td> {{ t.package_size }}</td>#}
+                    <td id="volume"> {{ t.volume }}</td>
+                    <td id="rev"> ${{ t.revenue }}</td>
+                     <td> ${{ t.total_acquisition_cost }}</td>
+                    <td id="p"> ${{ t.profit }}</td>
+                    <td id="m"> {{ t.margin }}%</td>
+                    <td> ${{ t.total_acq_unit_cost }}</td>
+                    <td><input id="alternative_unit_cost" type="float"><input id = "b" type="submit" value="Calculate"></td>
+                    <td></td>
+                    <td> {{ t.drug_manufacturer }}</td>
+                 </tr>
+              {% endfor %}
+          </thead>
+          <tbody>
+
+          </tbody>
+      </table>
+      <!-- Optional JavaScript -->
+      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script src={% static "js/bootstrap.bundle.js" %} charset="utf-8"></script>
+      <script src={% static "js/jquery.min.js" %} charset="utf-8"></script>
+        <script type="text/javascript">
+
+                 $("table tr td #b").on("click",function (e) {
+                     var r = $(this).closest("td").parent()[0].sectionRowIndex;
+                     var index = parseInt(r);
+                     var num1 = document.getElementById("tb").rows[index].cells[2].innerHTML;
+                     var num2 = document.getElementById("tb").rows[index].cells[8].firstChild.value;
+                     var result = num1*num2;
+                     var t_cost = document.getElementById("tb").rows[index].cells[4].innerHTML;
+                     var a = t_cost.substring(2);
+                     var re = a-result;
+                     var num = re.toFixed(2)
+                     document.getElementById("tb").rows[index].cells[9].innerHTML = num;
+                 })
+
+
+                 function runAjax(num){
+                     var table = document.getElementById('tb');
+
+                     var newfile = (JSON.stringify(tableToJson(table)))
+                     var obj = (JSON.parse(newfile));
+
+                     $.ajax({
+                                url: 'validate_username/',
+                                data: {
+                                    'GCN': obj[num]['gcn'],
+                                    'Description':obj[num]['description'],
+                                    'Volume':obj[num]['volume'],
+                                    'Total Revenue':obj[num]['totalrevenue'],
+                                    'Total Cost':obj[num]['totalcost'],
+                                    'Profit':obj[num]['profit'],
+                                    'Margin':obj[num]['margin'],
+                                    'Unit Cost':obj[num]['unitcost'],
+                                    'Alternative Unit Cost':obj[num]['alternativeunitcost'],
+                                    'Savings With Alternative Cost':obj[num]['savingswithalternativecost'],
+                                    'Drug Manufacturer':obj[num]['drugmanufacturer']
+
+                                },
+                                dataType: 'json',
+                                success: function (data) {
+                                  if (data.is_taken) {
+                                    alert("A user with this username already exists.");
+                                  }
+                                }
+                     });
+
+
+                 }
+                 function  f() {
+                     for (var i = 0; i < 25; i++) {
+
+                        runAjax(i);
+                     }
+                }
+
+                            function tableToJson(table) {
+                                        var data = [];
+
+                                        // first row needs to be headers
+                                        var headers = [];
+                                        for (var i=0; i<table.rows[0].cells.length; i++) {
+                                            headers[i] = table.rows[0].cells[i].innerHTML.toLowerCase().replace(/ /gi,'');
+                                        }
+
+                                        // go through cells
+                                        for (var i=1; i<table.rows.length; i++) {
+
+                                            var tableRow = table.rows[i];
+                                            var rowData = {};
+
+                                            for (var j=0; j<tableRow.cells.length; j++) {
+                                                if(j===8)
+                                                {
+                                                    rowData[headers[j]] = tableRow.cells[j].firstChild.value;
+                                                }
+                                                else {
+                                                    rowData[headers[j]] = tableRow.cells[j].innerHTML;
+                                                }
+                                            }
+
+                                            data.push(rowData);
+                                        }
+
+                                        return data;
+
+
+                            }
+
+
+
+
+
+
+
+
+
+        </script>
+  </body>
+</html>

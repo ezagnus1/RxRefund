@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+
+      {% load static %}
+    <link rel="stylesheet" href={% static "css/bootstrap.css" %} >
+    <title>Calculations</title>
+    <style>
+        body{background-color: #FAEBD7}
+         ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: #333;
+        }
+
+        li {
+          float: left;
+        }
+
+        li a {
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+
+        li a:hover:not(.active) {
+          background-color: #111;
+        }
+
+        .active {
+          background-color: #5498af;
+        }
+
+    </style>
+</head>
+<body>
+
+        <ul>
+            <li><a href="http://127.0.0.1:8000/">Home</a></li>
+            <li><a href="http://127.0.0.1:8000/summary/">Summary Page</a></li>
+            <li><a href="http://127.0.0.1:8000/date/">Dashboard Page</a></li>
+            <li><a href="http://127.0.0.1:8000/date/"> Date Page</a></li>
+            <li style="float:right"><a class="active" href="#about">About</a></li>
+        </ul>
+    <h1 style="text-align:center"> Calculations</h1>
+    <p>Margin = Profit / Revenue </p>
+    <p>Unit Cost = Total Cost / Total Units</p>
+    <p>Savings with Alternative Unit Cost = Total Cost - Volume * Alternative Unit Cost</p>
+</body>
+</html>

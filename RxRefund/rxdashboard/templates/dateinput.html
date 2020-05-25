@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        {% load static %}
+    <link rel="stylesheet" href={% static "css/bootstrap.css" %} >
+    <title>RxRefund</title>
+     <form action="http://127.0.0.1:8000/dashboard/" method="POST">
+          {{ f1.as_p }}
+          {% csrf_token %}
+           <!--Year:  <input type="number" name="year" ><br>-->
+           <!--Month: <input type="number" name="month" ><br><br> --->
+          <input type="submit" value="Get Results"><br><br>
+      </form>
+</head>
+<body>
+
+</body>
+</html>

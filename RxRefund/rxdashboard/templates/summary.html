@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    {% load static %}
+    <link rel="stylesheet" href={% static "css/bootstrap.css" %}>
+
+    <title>Summary_Page</title>
+    <style>
+        body{background-color:antiquewhite}
+
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: #333;
+        }
+
+        li {
+          float: left;
+        }
+
+        li a {
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+
+        li a:hover:not(.active) {
+          background-color: #111;
+        }
+
+        .active {
+          background-color: #5498af;
+        }
+
+    </style>
+</head>
+<body>
+     <ul>
+            <li><a href="http://127.0.0.1:8000/">Home</a></li>
+            <li><a href="http://127.0.0.1:8000/date/">Dashboard  Page</a></li>
+            <li><a href="http://127.0.0.1:8000/date/">Date</a></li>
+            <li><a href="http://127.0.0.1:8000/calculations/"> Calculation Page</a></li>
+            <li style="float:right"><a class="active" href="#about">About</a></li>
+     </ul>
+    <h1 style="text-align:center">SUMMARY PAGE</h1>
+    <table class="table table-bordered">
+        <tr>
+            <td></td>
+            <th scope="col">Nov18</th>
+            <th scope="col">Dec18</th>
+            <th scope="col">Jan19</th>
+
+        </tr>
+
+{#        {%for j in january  %}#}
+            <tr>
+                <th scope="row">Total Rx</th>
+                <td>{{ november.total }} </td>
+                <td>{{ december.total }} </td>
+                <td> {{ january.total }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Total Revenue</th>
+                <td> ${{ november.revenue }}</td>
+                <td>${{ december.revenue }}</td>
+                <td> ${{ january.revenue }}</td>
+
+            </tr>
+            <tr>
+                <th scope="row">COGS(Acq cost)</th>
+                <td>${{ november.acq }}</td>
+                <td>${{ december.acq }}</td>
+                <td>${{ january.acq }}</td>
+
+            </tr>
+            <tr>
+                <th scope="row">Gross Profit</th>
+                <td>${{ november.gross_profit }}</td>
+                <td>${{ december.gross_profit }}</td>
+                <td>${{ january.gross_profit }}</td>
+
+            </tr>
+            <tr>
+                <th scope="row">Avg Revenue by Rx</th>
+                <td>${{ november.avg_revenue }}</td>
+                <td>${{ december.avg_revenue }}</td>
+                <td>${{ january.avg_revenue }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Avg COG by RX</th>
+                <td>${{ november.avg_cog }}</td>
+                <td>${{ december.avg_cog }}</td>
+                <td>${{ january.avg_cog }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Avg Gross Profit by RX</th>
+                <td>${{ november.avg_profit }}</td>
+                <td>${{ december.avg_profit }}</td>
+                <td>${{ january.avg_profit }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Margin %</th>
+                <td>{{ november.margin }}%</td>
+                <td>{{ december.margin }}%</td>
+                <td>{{ january.margin }}%</td>
+            </tr>
+{#        {% endfor %}#}
+
+
+    </table>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="js/bootstrap.bundle.js" charset="utf-8">
+
+    </script>
+    <script src="js/jquery.min.js" charset="utf-8"></script>
+</body>
+</html>
